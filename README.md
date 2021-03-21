@@ -1,2 +1,2 @@
-# aw_restful_spring
+# Web Services RESTful e Spring
 Curso AlgaWorks - Web Services RESTful e Spring.

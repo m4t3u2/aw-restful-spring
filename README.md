@@ -1,2 +1,2 @@
-# Web Services RESTful e Spring
-Curso AlgaWorks - Web Services RESTful e Spring.
+# Web Services RESTful with Spring
+AlgaWorks Course - Web Services RESTful with Spring.

@@ -1,6 +1,6 @@
 package br.dev.simon.booksapi.domain;
 
-import java.sql.Date;
+import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -24,7 +24,7 @@ public class Comment {
 	private String usuario;
 
 	@ManyToOne(fetch = FetchType.LAZY) // Vários comentários para um livro.
-	@JoinColumn(name = "LIVRO_ID")
+	@JoinColumn(name = "BOOK_ID")
 	@JsonIgnore
 	private Book book;
 
@@ -52,6 +52,14 @@ public class Comment {
 
 	public void setUsuario(String usuario) {
 		this.usuario = usuario;
+	}
+
+	public Book getBook() {
+		return book;
+	}
+
+	public void setBook(Book book) {
+		this.book = book;
 	}
 
 	public Date getData() {

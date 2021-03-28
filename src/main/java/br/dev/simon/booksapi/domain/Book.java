@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -34,17 +36,15 @@ public class Book {
 
 	// @Transient //Evita fazer relação.
 	@JsonInclude(Include.NON_NULL)
-	@OneToMany(mappedBy = "book") // Um livro tem vários comentários.
+	@OneToMany(mappedBy = "book") // Um livro para vários comentários.
 	private List<Comment> comentarios;
 
 	@JsonInclude(Include.NON_NULL)
-	private String autor;
+	@ManyToOne // Vários livros para um autor.
+	@JoinColumn(name = "AUTHOR_ID")
+	private Author autor;
 
 	public Book() {
-	}
-
-	public Book(String nome) {
-		this.nome = nome;
 	}
 
 	public Long getId() {
@@ -95,11 +95,11 @@ public class Book {
 		this.comentarios = comentarios;
 	}
 
-	public String getAutor() {
+	public Author getAutor() {
 		return autor;
 	}
 
-	public void setAutor(String autor) {
+	public void setAutor(Author autor) {
 		this.autor = autor;
 	}
 

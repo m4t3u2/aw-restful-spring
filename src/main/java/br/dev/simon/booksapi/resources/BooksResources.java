@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import br.dev.simon.booksapi.domain.Book;
+import br.dev.simon.booksapi.domain.Comment;
 import br.dev.simon.booksapi.services.BooksService;
 
 @RestController
@@ -24,38 +25,53 @@ import br.dev.simon.booksapi.services.BooksService;
 public class BooksResources {
 
 	@Autowired
-	private BooksService service;
+	private BooksService booksService;
 
 	@GetMapping
 	public ResponseEntity<List<Book>> list() {
-		return ResponseEntity.status(HttpStatus.OK).body(service.list());
+		return ResponseEntity.status(HttpStatus.OK).body(booksService.list());
 	}
 
 	@GetMapping("/{id}")
 	// @RequestMapping(value = "/{id}", method = RequestMethod.GET) // Outra forma.
 	public ResponseEntity<?> find(@PathVariable Long id) {
-		Book book = service.find(id);
+		Book book = booksService.find(id);
 		return ResponseEntity.status(HttpStatus.OK).body(book);
 	}
 
 	@PostMapping
 	public ResponseEntity<Void> save(@RequestBody Book book) {
-		book = service.save(book);
+		book = booksService.save(book);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(book.getId()).toUri();
 		return ResponseEntity.created(uri).build();
 	}
 
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> delete(@PathVariable Long id) {
-		service.delete(id);
+		booksService.delete(id);
 		return ResponseEntity.noContent().build(); // Ideal retornar quando deletado.
 	}
 
 	@PutMapping("/{id}")
 	public ResponseEntity<Void> update(@RequestBody Book book, @PathVariable Long id) {
 		book.setId(id);
-		service.update(book);
+		booksService.update(book);
 		return ResponseEntity.noContent().build();
+	}
+
+	// Esse método poderia ficar em Resource separado.
+	@PostMapping("/{bookId}/comment")
+	public ResponseEntity<Void> addComment(@PathVariable Long bookId, @RequestBody Comment comment) {
+		booksService.saveComment(bookId, comment);
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
+		return ResponseEntity.created(uri).build();
+	}
+
+	// Esse método poderia ficar em Service separado.
+	@GetMapping("/{bookId}/comment")
+	public ResponseEntity<List<Comment>> listComment(@PathVariable Long bookId) {
+		List<Comment> comments = booksService.listComment(bookId);
+		return ResponseEntity.status(HttpStatus.OK).body(comments);
 	}
 
 }

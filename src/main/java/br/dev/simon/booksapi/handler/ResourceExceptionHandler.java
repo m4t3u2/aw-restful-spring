@@ -2,6 +2,7 @@ package br.dev.simon.booksapi.handler;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -51,6 +52,20 @@ public class ResourceExceptionHandler {
 		error.setTimestamp(System.currentTimeMillis());
 
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+	}
+
+	// Criado de forma genérica, poderia verificar o erro específico.
+	@ExceptionHandler(DataIntegrityViolationException.class)
+	public ResponseEntity<ErrorDetails> handleDataIntegrityViolationException(DataIntegrityViolationException e,
+			HttpServletRequest request) {
+
+		ErrorDetails error = new ErrorDetails();
+		error.setStatus(400l);
+		error.setTitulo("Invalid request!");
+		error.setMsgDev("simon.dev.br");
+		error.setTimestamp(System.currentTimeMillis());
+
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
 	}
 
 }

@@ -8,7 +8,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.NotEmpty;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -17,20 +19,20 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 public class Author {
 
 	@Id
-	@JsonInclude(Include.NON_NULL) // Só mostra no JSON se não for NULL.
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@JsonInclude(Include.NON_NULL)
+	@NotEmpty(message = "Nome não pode ser vazio.") // Validação.
+	@JsonInclude(Include.NON_NULL) // Só mostra no JSON se não for NULL.
 	private String nome;
 
 	@JsonInclude(Include.NON_NULL)
+	@JsonFormat(pattern = "dd/MM/yyyy")
 	private Date nascimento;
 
 	@JsonInclude(Include.NON_NULL)
 	private String nacionalidade;
 
-	@JsonInclude(Include.NON_NULL)
 	@JsonIgnore
 	@OneToMany(mappedBy = "autor") // Um autor tem vários livros.
 	private List<Book> books;

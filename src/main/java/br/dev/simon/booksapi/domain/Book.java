@@ -10,7 +10,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
@@ -18,24 +20,25 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 public class Book {
 
 	@Id
-	@JsonInclude(Include.NON_NULL) // Só mostra no JSON se não for NULL.
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@JsonInclude(Include.NON_NULL)
+	@JsonInclude(Include.NON_NULL) // Só mostra no JSON se não for NULL.
 	private String nome;
 
 	@JsonInclude(Include.NON_NULL)
+	@JsonFormat(pattern = "dd/MM/yyyy")
 	private Date publicacao;
 
 	@JsonInclude(Include.NON_NULL)
 	private String editora;
 
 	@JsonInclude(Include.NON_NULL)
+	@Size(max = 1500, message = "O resumo não pode conter mais que 1500 caracteres.")
 	private String resumo;
 
 	// @Transient //Evita fazer relação.
-	@JsonInclude(Include.NON_NULL)
+	@JsonInclude(Include.NON_EMPTY)
 	@OneToMany(mappedBy = "book") // Um livro para vários comentários.
 	private List<Comment> comentarios;
 

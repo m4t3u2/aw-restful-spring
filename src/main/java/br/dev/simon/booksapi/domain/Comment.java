@@ -11,6 +11,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 public class Comment {
@@ -19,8 +22,11 @@ public class Comment {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@JsonInclude(Include.NON_NULL)
+	@JsonProperty("comentario") // Muda no JSON o nome de ultilização.
 	private String texto;
 
+	@JsonInclude(Include.NON_NULL)
 	private String usuario;
 
 	@ManyToOne(fetch = FetchType.LAZY) // Vários comentários para um livro.
@@ -28,6 +34,7 @@ public class Comment {
 	@JsonIgnore
 	private Book book;
 
+	@JsonInclude(Include.NON_NULL)
 	private Date data;
 
 	public Long getId() {

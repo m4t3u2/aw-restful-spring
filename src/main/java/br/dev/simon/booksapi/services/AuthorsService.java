@@ -38,36 +38,5 @@ public class AuthorsService {
 		}
 		return authorsRepository.save(author);
 	}
-//
-//	public void delete(Long id) {
-//		try {
-//			booksRepository.deleteById(id);
-//		} catch (EmptyResultDataAccessException e) {
-//			throw new BookNotFoundException("Book not found!");
-//		}
-//	}
-//
-//	public void update(Book book) {
-//		bookExist(book);
-//		booksRepository.save(book);
-//	}
-//
-//	private void bookExist(Book book) {
-//		find(book.getId());
-//	}
-//
-//	// Esse método poderia ficar em Service separado.
-//	public Comment saveComment(Long bookId, Comment comment) {
-//		Book book = find(bookId);
-//		comment.setBook(book);
-//		comment.setData(new Date());
-//		return commentsRepository.save(comment);
-//	}
-//
-//	// Esse método poderia ficar em Service separado.
-//	public List<Comment> listComment(Long bookId) {
-//		Book book = find(bookId);
-//		return book.getComentarios();
-//	}
 
 }

@@ -2,8 +2,10 @@ package br.dev.simon.booksapi.resources;
 
 import java.net.URI;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -36,7 +38,8 @@ public class BooksResources {
 	// @RequestMapping(value = "/{id}", method = RequestMethod.GET) // Outra forma.
 	public ResponseEntity<?> find(@PathVariable Long id) {
 		Book book = booksService.find(id);
-		return ResponseEntity.status(HttpStatus.OK).body(book);
+		CacheControl cacheControl = CacheControl.maxAge(30, TimeUnit.SECONDS);
+		return ResponseEntity.status(HttpStatus.OK).cacheControl(cacheControl).body(book);
 	}
 
 	@PostMapping

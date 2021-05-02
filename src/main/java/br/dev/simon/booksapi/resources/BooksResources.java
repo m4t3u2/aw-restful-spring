@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -65,6 +67,8 @@ public class BooksResources {
 	// Esse método poderia ficar em Resource separado.
 	@PostMapping("/{bookId}/comment")
 	public ResponseEntity<Void> addComment(@PathVariable Long bookId, @RequestBody Comment comment) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		comment.setUsuario(auth.getName());
 		booksService.saveComment(bookId, comment);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
 		return ResponseEntity.created(uri).build();
